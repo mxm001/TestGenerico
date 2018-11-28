@@ -1,0 +1,74 @@
+function Employee(first, last, salary) {
+    this.firstName = first;
+    this.lastName = last;
+    this.salary = salary
+}
+Employee.prototype.increaseSalary = function() {
+    this.salary = this.salary+1000;
+};
+ 
+Employee.prototype.details = function() {
+    return this.firstName + " " + this.lastName+" : "+this.salary;
+};
+
+
+function MultiplyBy(i) {
+  var m = (j) => MultiplyBy(i * j);
+  m.toString = () => ''+i;
+  m.valueOf = () => i; 
+  return m;
+}
+
+function Longest_Country_Name(countries) {
+  return countries.sort((a, b) => {
+    return a.length > b.length ? 1 : -1;
+  }).pop();
+}
+
+
+<!DOCTYPE html>
+<html><head>
+<meta charset=utf-8 />
+<title>Remove items from a dropdown list</title>
+</head><body><form>
+<select id="colorSelect">
+<option>Red</option>
+<option>Green</option>
+<option>White</option>
+<option>Black</option>
+</select>
+<input type="button" onclick="removecolor()" value="Select and Remove">
+</form></body>
+<script>
+function removecolor()
+{
+var x=document.getElementById("colorSelect");
+x.remove(x.selectedIndex);
+}
+</script></html>
+
+
+<!DOCTYPE html>
+<html><head>
+<meta charset=utf-8 />
+<title>Insert row in a table</title>
+</head><body>
+<table id="sampleTable" border="1">
+<tr><td>Row1 cell1</td>
+<td>Row1 cell2</td></tr>
+<tr><td>Row2 cell1</td>
+<td>Row2 cell2</td></tr>
+</table><br>
+<input type="button" onclick="insert_Row()" value="Insert row"> 
+</body>
+<script>
+function insert_Row()
+{
+    var rowCount=document.getElementById('sampleTable').rows.length
+var newRow=document.getElementById('sampleTable').insertRow(rowCount);
+var cell1 = newRow.insertCell(0);
+var cell2 = newRow.insertCell(1);
+cell1.innerHTML="Row "+document.getElementById('sampleTable').rows.length+"Cell1";
+cell2.innerHTML="Row "+document.getElementById('sampleTable').rows.length+"Cell2";
+}
+</script></html>

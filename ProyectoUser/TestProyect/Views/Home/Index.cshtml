@@ -1,0 +1,284 @@
+﻿<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="//code.jquery.com/jquery-1.12.4.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<div id="body">
+
+    <section class="content-wrapper main-content clear-fix">
+        <h3>CRUD Usando Web APi</h3>
+        <ol class="round">
+
+            <li class="one">
+                <h5><a style="cursor: pointer" data-toggle="modal" data-target="#AddUser_Model">Add User</a></h5>
+                ajax call type:POST
+            </li>
+            <li class="two">
+                <h5><a id="GetAllUser" style="cursor: pointer"  data-toggle="modal" data-target="#GetData" >Get All Users</a></h5>
+                <b> api/User</b>
+                ajax call type:GET
+            </li>
+
+            <li class="three">
+                <h5><a id="GetAllUserbyid" style="cursor: pointer" data-toggle="modal" data-target="#GetDatabyid" >Get User by Id</a></h5>
+                <b> api/User/5</b>
+            </li>
+            <li class="four">
+                <h5><a data-toggle="modal" data-target="#UpdateUser_Model" style="cursor: pointer">Update User By Id</a></h5>
+              <b> api/User/5</b>
+              ajax call type:PUT
+            </li>
+            <li class="five">
+                <h5><a id="DeleteUser" style="cursor: pointer">Delete User By Id</a></h5>
+              <b> api/User/5</b>
+              ajax call type:DELETE
+            </li>
+        </ol>
+    </section>
+</div>
+
+<div id="AddUser_Model" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="position:fixed ">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add User</h4>
+            </div>
+            <div class="modal-body">
+                User Nombre :<input type="text" id="txtNombre" class="form-control required" />
+                User Apellido :<input type="text" id="txtApellido" class="form-control required" />
+                User Email :<input type="text" id="txtEmail" class="form-control required" />
+                User Password :<input type="text" id="txtPassword" class="form-control required" />
+             
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="btnSave" >Save</button>
+
+                <button type="button" class="btn btn-danger" onclick="clear();" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Show User Data-->
+<div id="GetData" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="position:fixed ">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Show User Data</h4>
+            </div>
+            <div class="modal-body">
+                <p id="idjson"></p>
+
+            </div>
+            <div class="modal-footer">
+
+                
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Show User Data by Id-->
+<div id="GetDatabyid" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="position:fixed ">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Show User Data by ID</h4>
+            </div>
+            <div class="modal-body">
+                <p id="idjsonbyid"></p>
+
+            </div>
+            <div class="modal-footer">
+
+                
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Modal Update User -->
+<div id="UpdateUser_Model" class="modal fade" role="dialog" >
+    <div class="modal-dialog" style="position:fixed ">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Update User of ID 5</h4>
+            </div>
+            <div class="modal-body">
+                User Nombre :<input type="text" id="txtNombre2" class="form-control required" />
+                User Apellido :<input type="text" id="txtApellido2" class="form-control required" />
+                User Email :<input type="text" id="txtEmail2" class="form-control required" />
+                User Password :<input type="text" id="txtPassword2" class="form-control required" />
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="btnUpdate">Update</button>
+
+                <button type="button" class="btn btn-danger" onclick="clear();" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnSave").click(function () {
+           
+            var ID = 0;
+            var Nombre = $("#txtNombre").val();
+            var Apellido = $("#txtApellido").val();
+            var Email = $("#txtEmail").val();
+            var Password = $("#txtPassword").val();
+            
+
+            if (CheckRequiredFields()) {
+               
+                $.ajax({
+                    url: '/api/Users/',
+                    type: 'POST',
+                    data: JSON.stringify({ "Id": parseInt(ID), "Nombre": Nombre, "Apellido": Apellido, "Email": Email,"Password":Password }),
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                        alert("Sucess");
+                        jQuery.noConflict();
+                        $('#AddUser_Model').modal('hide');
+                        $('.modal-backdrop').hide();
+
+                        clear();
+                    },
+                    error: function (request, msg, error) {
+                        alert("Error");
+                    }
+                });
+            }
+        });
+        $("#GetAllUser").click(function () {
+            $.ajax({
+                url: '/api/Users',
+                type: 'GET',
+                // data: JSON.stringify({  }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    jQuery.noConflict();
+                    $("#idjson").text(JSON.stringify(result));
+                    $('#GetData').modal('show');
+                },
+                error: function (request, msg, error) {
+                    alert("Error");
+                }
+            });
+        });
+        $("#GetAllUserbyid").click(function () {
+            $.ajax({
+                url: '/api/Users/5',
+                type: 'GET',
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    jQuery.noConflict();
+                    $("#idjsonbyid").text(JSON.stringify(result));
+                    $('#GetDatabyid').modal('show');
+                },
+                error: function (request, msg, error) {
+                    alert("Error");
+                }
+            });
+        });
+        $("#btnUpdate").click(function () {
+            
+            var ID = 5;
+            var Nombre = $("#txtNombre2").val();
+            var Apellido = $("#txtApellido2").val();
+            var Email = $("#txtEmail2").val();
+            var Password = $("#txtPassword2").val();
+            
+            $.ajax({
+                url: '/api/Users/5',
+                type: 'PUT',
+                data: JSON.stringify({ "Id": parseInt(ID), "Nombre": Nombre, "Apellido": Apellido, "Email": Email, "Password": Password }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    
+                    $('#UpdateUser_Model').modal('hide');
+                    $('.modal-backdrop').hide();
+                    
+                    clear2();
+                },
+                error: function (request, msg, error) {
+                alert("Error");
+            }
+            });
+        });
+        $("#DeleteUser").click(function () {
+            $.ajax({
+                url: '/api/Users/5',
+                method: 'DELETE',
+                contentType: 'application/json',
+                success: function (result) {
+                    alert("User Deleted successfull");
+                },
+                error: function (request, msg, error) {
+                    alert("User Not Deleted");
+                }
+            });
+        });
+    });
+    function CheckRequiredFields() {
+     //TODO
+        return true;
+    }
+    function clear() {
+      $("#txtNombre").val("");
+        $("#txtApellido").val("");
+        $("#txtEmail").val("");
+         $("#txtPassword").val("");
+    }
+    function clear2() {
+        $("#txtNombre2").val("");
+        $("#txtApellido2").val("");
+        $("#txtEmail2").val("");
+        $("#txtPassword2").val("");
+    }
+    function isNumberKey(evt) {
+        var charcode = (evt.which) ? evt.which : evt.keycode
+        if (charcode > 31 && (charcode < 48 || charcode > 58)
+            && evt.keyCode != 35 && evt.keyCode != 36 && evt.keyCode != 37
+            && evt.keyCode != 38 && evt.keyCode != 39 && evt.keyCode != 40
+            && evt.keyCode != 46) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+</script>
